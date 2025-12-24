@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mega Feirão - Natal</title>
+
+<style>
+/* Reset e Base Otimizada para Mobile */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif; -webkit-tap-highlight-color: transparent;}
+body{height:100vh;display:flex;justify-content:center;align-items:center;background:#f8f8f8;color:#ff4fa3;overflow:hidden}
+
+.container{
+    width: 90%; /* Ocupa 90% da largura em telas pequenas */
+    max-width:400px; 
+    text-align:center;
+    padding:30px 20px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    position:relative;
+}
+
+/* Tipografia Responsiva */
+h1{font-size: clamp(24px, 8vw, 32px); font-weight:bold; margin-bottom:10px; white-space: nowrap;} 
+h1 span{display:inline-block;opacity:0;transform:translateY(-60px);animation:drop .8s forwards;animation-delay:calc(var(--i)*.08s)}
+@keyframes drop{to{opacity:1;transform:translateY(0)}}
+
+h2{font-size:18px; margin-bottom:25px; color: #555;}
+
+/* Elementos de Carregamento */
+.loading-text{font-size:14px; margin-bottom:10px; font-weight: bold;}
+.progress-bar{width:100%; height:16px; border:2px solid #ff4fa3; border-radius:20px; overflow:hidden; margin-bottom:10px; background: #eee;}
+.progress{height:100%; width:0%; background:#ff4fa3; transition: width 0.1s linear;}
+.percent{font-size:16px; font-weight: bold; margin-bottom:20px;}
+
+/* Botão Otimizado para Toque (Mobile Friendly) */
+button{
+    width:100%; 
+    padding:18px; /* Aumentado para facilitar o clique no celular */
+    font-size:18px; 
+    font-weight:bold; 
+    color:#fff; 
+    background:#ff4fa3; 
+    border:none; 
+    border-radius:15px; 
+    cursor:pointer; 
+    margin-top:10px;
+    box-shadow: 0 4px 15px rgba(255, 79, 163, 0.3);
+    transition: transform 0.2s active;
+}
+button:active { transform: scale(0.98); }
+
+.confetti{position:absolute;font-size:22px;animation:confetti-fall 2s linear forwards}
+@keyframes confetti-fall{from{opacity:1;transform:translateY(0) rotate(0)}to{opacity:0;transform:translateY(600px) rotate(360deg)}}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1 id="title"></h1>
+  <h2>Promoção de Natal</h2>
+
+  <div class="loading-text" id="loadingText">Verificando ofertas...</div>
+
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div class="percent" id="percent">0%</div>
+
+  <button onclick="acessarAgora()">ACESSAR AGORA</button>
+</div>
+
+<script>
+const LINK_BOTAO="https://feiradecadastrosnsmk.github.io/feirao/inicio/";
+const text="MEGA FEIRÃO";
+const title=document.getElementById("title");
+
+// Mantém as palavras lado a lado com espaço
+[...text].forEach((c,i)=>{
+    const s=document.createElement("span");
+    s.innerHTML = c === " " ? "&nbsp;" : c; 
+    s.style.setProperty("--i",i);
+    title.appendChild(s);
+});
+
+let p=0, bar=document.getElementById("progress"), per=document.getElementById("percent"), lt=document.getElementById("loadingText");
+const interval = setInterval(()=>{
+    p++;
+    bar.style.width=p+"%";
+    per.innerText=p+"%";
+    if(p>=100){
+        clearInterval(interval);
+        lt.innerText="Ofertas Liberadas!";
+        confetti();
+    }
+}, 35);
+
+function acessarAgora(){ window.location.href=LINK_BOTAO }
+
+function confetti(){
+  for(let i=0;i<30;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.innerText="🎉";
+    c.style.left=Math.random()*100+"%";
+    c.style.top="-20px";
+    c.style.animationDuration=(1.5+Math.random())+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),2000);
+  }
+}
+</script>
+</body>
+</html>
